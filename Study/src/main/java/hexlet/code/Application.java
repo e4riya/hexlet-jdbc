@@ -15,26 +15,15 @@ public class Application {
             try (Statement stmt = conn.createStatement()) {
                 stmt.execute(sql);
             }
+            UserDAO ud = new UserDAO(conn);
+            ud.save(new User("tommy", "123456789"));
+            ud.save(new User("Alex", "228"));
+            ud.save(new User("Bob", "123123"));
 
-            String sql2 = "INSERT INTO users (username, phone) VALUES ('tommy', '123456789')";
-            try (Statement stmt = conn.createStatement()) {
-                stmt.executeUpdate(sql2);
-            }
-
-            String sql4 = "INSERT INTO users (username, phone) VALUES (?, ?)";
-            try (PreparedStatement stmt = conn.prepareStatement(sql4)) {
-                stmt.setString(1, "Alex");
-                stmt.setString(2, "228");
-                stmt.executeUpdate();
-
-                stmt.setString(1, "Bob");
-                stmt.setString(2, "123123");
-                stmt.executeUpdate();
-            }
-            String sql5 = "DELETE FROM users WHERE USERNAME = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(sql5)) {
+            String sql2 = "DELETE FROM users WHERE USERNAME = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql2)) {
                 stmt.setString(1, "tommy");
-                stmt.execute();
+                stmt.executeUpdate();
             }
             String sql3 = "SELECT * FROM users";
             try (Statement stmt = conn.createStatement()) {
